@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>App Usage Monitor</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .controls { margin-bottom: 20px; }
+        #apiKey { width: 300px; padding: 5px; }
+        button { padding: 5px 15px; cursor: pointer; }
+        .chart-container { margin-top: 30px; max-width: 1000px; }
+    </style>
+</head>
+<body>
+    <h1>🖥️ App Usage Monitor</h1>
+
+    <div class="controls">
+        <input type="text" id="apiKey" placeholder="Enter API Key">
+        <button onclick="loadData()">Load Data</button>
+        <select id="timeFilter" onchange="loadData()">
+            <option value="latest">Last 5 Minutes</option>
+            <option value="1h">Last 1 Hour</option>
+            <option value="1d">Last 1 Day</option>
+        </select>
+    </div>
+
+    <!-- Charts -->
+    <div class="chart-container">
+        <canvas id="resourceChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="appDurationChart"></canvas>
+    </div>
+
+    <script>
+        let resourceChart, appDurationChart;
+
+        async function loadData() {
+            const apiKey = document.getElementById('apiKey').value;
+            const timeFilter = document.getElementById('timeFilter').value;
+
+            if (!apiKey) {
+                alert("🔑 API Key is required!");
+                return;
+            }
+
+            try {
+                const response = await axios.get('http://localhost:8000/api/stats', {
+                    headers: { 'Authorization': `Api-Key ${apiKey}` },
+                    params: { time_filter: timeFilter }
+                });
+
+                renderCharts(response.data[0]);
+            } catch (error) {
+                alert("❌ Failed to fetch data. Check API key and server!");
+            }
+        }
+
+        function renderCharts(data) {
+            // Destroy old charts
+            if (resourceChart) resourceChart.destroy();
+            if (appDurationChart) appDurationChart.destroy();
+
+            // 1. CPU & RAM Usage Chart
+            const resourceCtx = document.getElementById('resourceChart').getContext('2d');
+            resourceChart = new Chart(resourceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['CPU Usage', 'RAM Usage'],
+                    datasets: [{
+                        label: 'Resource Utilization (%)',
+                        data: [data.cpu_percent, data.ram_usage],
+                        backgroundColor: ['#FF6B6B', '#4D96FF'],
+                        borderColor: ['#FF2626', '#0A4CFF'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true, max: 100 } }
+                }
+            });
+
+            // 2. App Duration Chart
+            const appCtx = document.getElementById('appDurationChart').getContext('2d');
+            appDurationChart = new Chart(appCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.apps.map(app => app.name),
+                    datasets: [{
+                        label: 'Usage Duration (Minutes)',
+                        data: data.apps.map(app => app.duration),
+                        backgroundColor: '#6BCB77',
+                        borderColor: '#2B8A3E',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',
+                    scales: {
+                        x: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
