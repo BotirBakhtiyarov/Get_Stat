@@ -4,22 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b221359-672c-4479-93de-98a43e1b9e33" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Get_Stat.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StatsProject/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StatsProject/stats/management/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StatsProject/stats/management/commands/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StatsProject/stats/management/commands/createapikey.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StatsProject/stats/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/help.md" afterDir="false" />
-    </list>
+    <list default="true" id="7b221359-672c-4479-93de-98a43e1b9e33" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
