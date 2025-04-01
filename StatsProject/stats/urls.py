@@ -5,5 +5,4 @@ from .views import DataReceiverView
 urlpatterns = [
     path('api/data', DataReceiverView.as_view(), name='data-receiver'),
     path('api/stats', views.StatsView.as_view()),
-    path('secure-data', views.SecureDataView.as_view())
 ]
