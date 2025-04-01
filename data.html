@@ -1,20 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>App Usage Monitor</title>
+    <title>Multi-Computer App Usage Monitor</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .controls { margin-bottom: 20px; }
-        #apiKey { width: 300px; padding: 5px; }
-        button { padding: 5px 15px; cursor: pointer; }
-        .chart-container { margin-top: 30px; max-width: 1000px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .header {
+            margin-bottom: 20px;
+        }
+        .controls {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        #apiKey {
+            width: 300px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button, select {
+            padding: 8px 15px;
+            cursor: pointer;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        button:hover, select:hover {
+            background-color: #3a5a8a;
+        }
+        .computer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        .computer-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px;
+        }
+        .computer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .computer-name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .computer-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .info-item {
+            font-size: 14px;
+        }
+        .info-label {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-weight: bold;
+        }
+        .chart-container {
+            margin-top: 15px;
+        }
+        .filter-controls {
+            margin-bottom: 15px;
+        }
+        #computerFilter {
+            width: 300px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
-    <h1>App Usage Monitor</h1>
+    <div class="header">
+        <h1>🖥️ Multi-Computer Usage Monitor</h1>
+    </div>
 
+    <!-- Controls -->
     <div class="controls">
         <input type="text" id="apiKey" placeholder="Enter API Key">
         <button onclick="loadData()">Load Data</button>
@@ -22,19 +109,22 @@
             <option value="latest">Last 5 Minutes</option>
             <option value="1h">Last 1 Hour</option>
             <option value="1d">Last 1 Day</option>
+            <option value="7d">Last 7 Days</option>
         </select>
     </div>
 
-    <!-- Charts -->
-    <div class="chart-container">
-        <canvas id="resourceChart"></canvas>
+    <div class="filter-controls">
+        <input type="text" id="computerFilter" placeholder="Filter by computer name" oninput="filterComputers()">
     </div>
-    <div class="chart-container">
-        <canvas id="appDurationChart"></canvas>
+
+    <!-- Computers Grid -->
+    <div class="computer-grid" id="computersContainer">
+        <!-- Computer cards will be inserted here -->
     </div>
 
     <script>
-        let resourceChart, appDurationChart;
+        let allComputersData = [];
+        let computerCharts = {};
 
         async function loadData() {
             const apiKey = document.getElementById('apiKey').value;
@@ -51,26 +141,70 @@
                     params: { time_filter: timeFilter }
                 });
 
-                renderCharts(response.data[0]);
+                allComputersData = response.data;
+                renderAllComputers();
             } catch (error) {
                 alert("❌ Failed to fetch data. Check API key and server!");
             }
         }
 
-        function renderCharts(data) {
-            // Destroy old charts
-            if (resourceChart) resourceChart.destroy();
-            if (appDurationChart) appDurationChart.destroy();
+        function renderAllComputers() {
+            const container = document.getElementById('computersContainer');
+            container.innerHTML = '';
 
-            // 1. CPU & RAM Usage Chart
-            const resourceCtx = document.getElementById('resourceChart').getContext('2d');
-            resourceChart = new Chart(resourceCtx, {
+            // Destroy all existing charts
+            Object.values(computerCharts).forEach(chart => chart.destroy());
+            computerCharts = {};
+
+            allComputersData.forEach(computer => {
+                const card = document.createElement('div');
+                card.className = 'computer-card';
+                card.id = `computer-${computer.computer_id}`;
+
+                card.innerHTML = `
+                    <div class="computer-header">
+                        <div class="computer-name">${computer.computer_id || 'Unknown Computer'}</div>
+                        <div>User: ${computer.username || 'Unknown'}</div>
+                    </div>
+                    <div class="computer-info">
+                        <div class="info-item">
+                            <div class="info-label">CPU Usage</div>
+                            <div class="info-value">${computer.cpu_percent}%</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">RAM Usage</div>
+                            <div class="info-value">${computer.ram_usage}%</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Last Updated</div>
+                            <div class="info-value">${new Date(computer.last_seen).toLocaleString()}</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="resourceChart-${computer.computer_id}"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="appChart-${computer.computer_id}"></canvas>
+                    </div>
+                `;
+
+                container.appendChild(card);
+
+                // Render charts for this computer
+                renderComputerCharts(computer);
+            });
+        }
+
+        function renderComputerCharts(computer) {
+            // Resource Chart
+            const resourceCtx = document.getElementById(`resourceChart-${computer.computer_id}`).getContext('2d');
+            computerCharts[`resource-${computer.computer_id}`] = new Chart(resourceCtx, {
                 type: 'bar',
                 data: {
-                    labels: ['CPU Usage', 'RAM Usage'],
+                    labels: ['CPU', 'RAM'],
                     datasets: [{
-                        label: 'Resource Utilization (%)',
-                        data: [data.cpu_percent, data.ram_usage],
+                        label: 'Resource Usage (%)',
+                        data: [computer.cpu_percent, computer.ram_usage],
                         backgroundColor: ['#FF6B6B', '#4D96FF'],
                         borderColor: ['#FF2626', '#0A4CFF'],
                         borderWidth: 1
@@ -78,19 +212,36 @@
                 },
                 options: {
                     responsive: true,
-                    scales: { y: { beginAtZero: true, max: 100 } }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Percentage (%)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Resource Usage'
+                        }
+                    }
                 }
             });
 
-            // 2. App Duration Chart
-            const appCtx = document.getElementById('appDurationChart').getContext('2d');
-            appDurationChart = new Chart(appCtx, {
+            // App Chart
+            const appCtx = document.getElementById(`appChart-${computer.computer_id}`).getContext('2d');
+            const sortedApps = [...computer.apps].sort((a, b) => b.duration - a.duration);
+
+            computerCharts[`app-${computer.computer_id}`] = new Chart(appCtx, {
                 type: 'bar',
                 data: {
-                    labels: data.apps.map(app => app.name),
+                    labels: sortedApps.map(app => app.name),
                     datasets: [{
                         label: 'Usage Duration (Minutes)',
-                        data: data.apps.map(app => app.duration),
+                        data: sortedApps.map(app => app.duration),
                         backgroundColor: '#6BCB77',
                         borderColor: '#2B8A3E',
                         borderWidth: 1
@@ -100,8 +251,34 @@
                     responsive: true,
                     indexAxis: 'y',
                     scales: {
-                        x: { beginAtZero: true }
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Duration (minutes)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Top Applications'
+                        }
                     }
+                }
+            });
+        }
+
+        function filterComputers() {
+            const filterText = document.getElementById('computerFilter').value.toLowerCase();
+            const computers = document.querySelectorAll('.computer-card');
+
+            computers.forEach(computer => {
+                const name = computer.querySelector('.computer-name').textContent.toLowerCase();
+                if (name.includes(filterText)) {
+                    computer.style.display = 'block';
+                } else {
+                    computer.style.display = 'none';
                 }
             });
         }

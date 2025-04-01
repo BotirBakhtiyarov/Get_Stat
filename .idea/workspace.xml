@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b221359-672c-4479-93de-98a43e1b9e33" name="Changes" comment="" />
+    <list default="true" id="7b221359-672c-4479-93de-98a43e1b9e33" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/CODE_OF_CONDUCT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CONTRIBUTING.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatsProject/StatsProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/StatsProject/StatsProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatsProject/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/StatsProject/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatsProject/stats/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/StatsProject/stats/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatsProject/stats/management/commands/createapikey.py" beforeDir="false" afterPath="$PROJECT_DIR$/StatsProject/stats/management/commands/createapikey.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatsProject/stats/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/StatsProject/stats/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/data.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/help.md" beforeDir="false" afterPath="$PROJECT_DIR$/help.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,8 +27,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -30,15 +44,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Python.agent.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Python.agent.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\munisa\Get_Stat\StatsProject\stats\management" />

@@ -9,12 +9,6 @@ from django.utils import timezone
 from datetime import timedelta
 from rest_framework.parsers import JSONParser
 
-class SecureDataView(APIView):
-    permission_classes = [HasAPIKey]
-
-    def get(self, request):
-        return Response({"message": "API Key bilan himoyalangan ma'lumot!"})
-
 
 class DataReceiverView(APIView):
     parser_classes = [JSONParser]
