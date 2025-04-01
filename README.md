@@ -83,7 +83,7 @@ Authorization: Api-Key YOUR_API_KEY
 ```
 
 ## License
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 
 
