@@ -27,7 +27,7 @@ A distributed system monitoring solution that tracks computer resource usage and
 
 1. Clone repository:
 ```bash
-git clone https://github.com/yourusername/Get_Stat.git
+git clone https://github.com/BotirBakhtiyarov/Get_Stat.git
 cd Get_Stat
 ```
 
