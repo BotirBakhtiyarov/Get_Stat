@@ -125,7 +125,7 @@ curl -H "Authorization: Api-Key YOUR_API_KEY" "http://localhost:8000/api/stats?t
 
 - **Agent**: Edit `agent.py` to add metrics or adjust the polling interval.
 - **Backend**: Modify `models.py` to store additional data.
-- **Frontend**: Enhance `data.html` with new visualizations or features via Chart.js/Axios.
+- **Frontend**: Enhance `data.html` with new visualizations for testing API.
 
 ## Security Considerations
 
